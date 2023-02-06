@@ -2,7 +2,6 @@ import React from "react";
 import { celcTemp } from "../utils/getWeatherData";
 
 export const ThreeHourForecast = ({ threeHoursData }) => {
-  console.log(threeHoursData);
   return (
     <div className="th-container">
       {threeHoursData?.list?.map((el, index) => {
