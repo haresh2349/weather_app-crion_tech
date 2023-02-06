@@ -1,5 +1,15 @@
 import { TbTemperatureCelsius } from "react-icons/tb";
-export const WeatherDetails = ({ data }) => {
+import {
+  celcTemp,
+  clearWeather,
+  cloudyWeather,
+  drizzleWeather,
+  hazeWeather,
+  mistWeather,
+  rainyWeather,
+  stromyWeather,
+} from "../utils/getWeatherData";
+export const CurrentWeather = ({ data }) => {
   const date = new Date();
   const weekday = [
     "Sunday",
@@ -24,9 +34,7 @@ export const WeatherDetails = ({ data }) => {
     "November",
     "December",
   ];
-  const celcTemp = (temp) => {
-    return temp - 273.15;
-  };
+
   return (
     <div className="w-container">
       {data?.message !== "city not found" ? (
@@ -46,19 +54,23 @@ export const WeatherDetails = ({ data }) => {
               <p>Feels Like {celcTemp(data?.main?.feels_like).toFixed(2)}</p>
             </div>
             <div className="w-image">
-              {data?.weather[0]?.main === "clear" ? (
+              {data?.weather[0]?.main.includes("clear") ? (
+                <img src={clearWeather} alt="" />
+              ) : data?.weather[0]?.main.includes("Clouds") ? (
+                <img src={cloudyWeather} alt="" />
+              ) : data?.weather[0]?.main.includes("haze") ? (
+                <img src={hazeWeather} alt="haze" />
+              ) : data?.weather[0]?.main.includes("mist") ? (
+                <img src={mistWeather} alt="mist" />
+              ) : data?.weather[0]?.main.includes("rain") ? (
+                <img src={rainyWeather} alt="rainy" />
+              ) : data?.weather[0]?.main.includes("drizzle") ? (
+                <img src={drizzleWeather} alt="drizzle" />
+              ) : data?.weather[0]?.main.includes("strom") ? (
+                <img src={stromyWeather} alt="stromy" />
+              ) : date.getHours() >= 6 ? (
                 <img
-                  src="https://cdn-icons-png.flaticon.com/512/6581/6581533.png"
-                  alt=""
-                />
-              ) : data?.weather[0]?.main === "Clouds" ? (
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/4724/4724094.png"
-                  alt=""
-                />
-              ) : data?.weather[0]?.main === "haze" ? (
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/1779/1779807.png"
+                  src="https://cdn-icons-png.flaticon.com/512/7687/7687113.png"
                   alt=""
                 />
               ) : (

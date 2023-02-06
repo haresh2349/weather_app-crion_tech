@@ -5,12 +5,15 @@
 }
 
 .container {
-  max-width: 1200px;
+  width: 100%;
   margin: auto;
   background: #1C1E1F;
   height: 100vh;
   padding: 30px;
 }
+
+/* Searchbar Style */
+
 .s-container{
   display: flex;
   width: 50%;
@@ -42,6 +45,8 @@
   outline: none;
 }
 
+/* Weather details container style */
+
 .w-container{
   width: 50%;
   margin: auto;
@@ -49,6 +54,7 @@
   flex-direction: column;
   display: flex;
   grid-gap: 15px;
+  margin-bottom: 20px;
 }
 .w-cityDetails{
   margin-top: 10px;
@@ -82,4 +88,53 @@
 .w-notFound{
   padding: 10px;
   text-align: center;
+}
+
+/* Three Hours ForeCast */
+
+.th-container{
+  display: flex;
+  width: 50%;
+  flex-wrap: wrap;
+  margin: auto;
+  justify-content: space-between;
+}
+.th-min_max{
+  display: flex;
+  font-size: 12px;
+}
+.th-single{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #FFF;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+
+/* Responsive style */
+
+@media screen and (max-width: 480px)  {
+    .container{
+      height: auto;
+    }
+    .s-container,.w-container,.th-container{
+      width: 100%;
+
+    }
+    .th-single{
+      margin-top: 10px;
+    }
+}
+@media screen and (min-width: 480px) and (max-width:992px) {
+    .container{
+      height: auto;
+    }
+    .s-container,.w-container,.th-container{
+      width: 100%;
+    }
+    .th-single{
+      margin-top: 10px;
+    }
 }

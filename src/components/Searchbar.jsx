@@ -1,10 +1,14 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { getCurrentWeather } from "../utils/getWeatherData";
-import { WeatherDetails } from "./WeatherDeatils";
+import {
+  getCurrentWeather,
+  getThreeHourForecast,
+} from "../utils/getWeatherData";
+import { CurrentWeather } from "./CurrentWeather";
+import { ThreeHourForecast } from "./ThreeHourForecast";
 export const Searchbar = () => {
   const [data, setData] = useState(null);
+  const [threeHoursData, setThreeHoursData] = useState(null);
   const inputRef = useRef("");
   const searchHandler = (e) => {
     const city = inputRef.current.value;
@@ -16,6 +20,10 @@ export const Searchbar = () => {
         .catch((err) => {
           console.log(err);
         });
+
+      getThreeHourForecast("palanpur").then((res) => {
+        setThreeHoursData(res);
+      });
     }
   };
   useEffect(() => {
@@ -26,10 +34,15 @@ export const Searchbar = () => {
       .catch((err) => {
         setData(null);
       });
+
+    getThreeHourForecast("palanpur").then((res) => {
+      setThreeHoursData(res);
+    });
   }, []);
 
   return (
     <>
+      {/* Searchbar  */}
       <div className="s-container">
         <div className="s-icon">
           <BsSearch />
@@ -38,9 +51,12 @@ export const Searchbar = () => {
           <input onKeyUp={searchHandler} ref={inputRef} type="text" />
         </div>
       </div>
+      {/*Weather Details */}
       <div>
-        <WeatherDetails data={data} />
+        <CurrentWeather data={data} />
       </div>
+      {/* Three Hour Forecast */}
+      <ThreeHourForecast threeHoursData={threeHoursData} />
     </>
   );
 };
