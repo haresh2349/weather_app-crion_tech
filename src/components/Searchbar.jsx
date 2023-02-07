@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import { ToastContainer, toast } from "react-toastify";
 import {
   getCurrentWeatherByCity,
   getCurrentWeatherByZIP,
@@ -8,6 +9,8 @@ import {
 } from "../utils/getWeatherData";
 import { CurrentWeather } from "./CurrentWeather";
 import { ThreeHourForecast } from "./ThreeHourForecast";
+import { BallTriangle } from "react-loader-spinner";
+import "react-toastify/dist/ReactToastify.css";
 export const Searchbar = () => {
   const [data, setData] = useState(null);
   const [threeHoursData, setThreeHoursData] = useState(null);
@@ -19,34 +22,90 @@ export const Searchbar = () => {
     const zipCode = zipCodeRef.current.value;
     const countryCode = countryCodeRef.current.value;
     if (e.keyCode === 13) {
+      if (!city && !zipCode && !countryCode) {
+        console.log("ksndf");
+        toast.error("Please Enter valid details!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
       if (city) {
         getCurrentWeatherByCity(city)
           .then((res) => {
             setData(res);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error("Something went wrong!", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           });
 
-        getThreeHourForecastByCity("chennai").then((res) => {
+        getThreeHourForecastByCity(city).then((res) => {
           setThreeHoursData(res);
         });
       } else {
         if (zipCode && !countryCode) {
           countryCodeRef.current.focus();
+        } else if (!zipCode && countryCode) {
+          toast.error("Please Enter ZIP code!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         }
+
         if (zipCode && countryCode) {
           getCurrentWeatherByZIP({ zipCode, countryCode })
             .then((res) => {
               setData(res);
             })
-            .catch((err) => {});
+            .catch((err) => {
+              toast.error("Something went wrong!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            });
 
           getThreeHourForecastByZip({ zipCode, countryCode })
             .then((res) => {
               setThreeHoursData(res);
             })
-            .catch((err) => {});
+            .catch((err) => {
+              toast.error("Something went wrong!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            });
         }
       }
     }
@@ -57,7 +116,16 @@ export const Searchbar = () => {
         setData(res);
       })
       .catch((err) => {
-        setData(null);
+        toast.error("Something went wrong!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
 
     getThreeHourForecastByCity("chennai").then((res) => {
@@ -111,12 +179,31 @@ export const Searchbar = () => {
           </div>
         </div>
       </div>
-      {/*Weather Details */}
-      <div>
-        <CurrentWeather data={data} />
-      </div>
-      {/* Three Hour Forecast */}
-      <ThreeHourForecast threeHoursData={threeHoursData} />
+      {data?.message === "city not found" ? (
+        <h1 className="notFound">Opps! Not Found</h1>
+      ) : data === null ? (
+        <div className="loader">
+          <BallTriangle
+            height={100}
+            width={100}
+            radius={5}
+            color="#4fa94d"
+            ariaLabel="ball-triangle-loading"
+            wrapperClass={{}}
+            wrapperStyle=""
+            visible={true}
+          />
+        </div>
+      ) : (
+        <>
+          {/*Weather Details */}
+          <CurrentWeather data={data} />
+
+          {/* Three Hour Forecast */}
+          <ThreeHourForecast threeHoursData={threeHoursData} />
+        </>
+      )}
+      <ToastContainer />
     </>
   );
 };
